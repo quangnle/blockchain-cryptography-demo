@@ -1,0 +1,60 @@
+{
+  "parser": "babel-eslint",
+  "root": true,
+  "extends": [
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:prettier/recommended"
+  ],
+
+  "rules": {
+    "no-param-reassign": "off",
+    "import/prefer-default-export": "off",
+    "react/require-default-props": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-props-no-spreading": "off",
+    // "react/no-danger": "off", // it's self explainatory that no-danger should be used sparingly
+    "react/react-in-jsx-scope": "off", // next.js does not require react in most components
+    "no-console": "off", // no console statements allowed
+    // "prettier/prettier": "off"
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "avoid",
+        "semi": true,
+        "trailingComma": "none",
+        "endOfLine": "auto",
+        "tabWidth": 2,
+        "printWidth": 80,
+        "useTabs": false,
+        "singleQuote": true,
+        "jsxSingleQuote": false
+      }
+    ] // don't show prettier errors as it will be fixed when saved anyway
+  },
+  "settings": {
+    "import/extensions": [".js", ".jsx"],
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx"]
+      },
+      "babel-module": {
+        "extensions": [".js", ".jsx"],
+        "alias": {
+          "@components": "./src/components",
+          "@container": "./src/container"
+        }
+      }
+    }
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  }
+}
