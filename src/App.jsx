@@ -1,10 +1,25 @@
 // No need to import "react" just for JSX in React 17+
 import HelloWorld from '@components/HelloWorld';
 import Recipes from '@components/Recipes';
-import sword from './assets/images/swc-sword.png';
-import swordSvg from './assets/images/sword.svg';
 import './components/HelloWorld/index.scss';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import ErrorBoundary from '@components/ErrorBoundary/ErrorBoundary';
+import sword from './assets/images/swc-sword.png';
 
+const Contact = lazy(() => import('@components/Contact'));
+
+const mock = (success, timeout) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (success) {
+        resolve(console.log('hahaha'));
+      } else {
+        reject({ message: 'Error' });
+      }
+    }, timeout);
+  });
+};
 function App() {
   const data = {
     name: 'Eren',
@@ -17,16 +32,50 @@ function App() {
     ironIngot: 1,
     refinedMoonstone: 4
   };
-
+  const clickMe = () => {
+    return elvenShieldRecipe.a.a;
+  };
   // ES7 Object spread example
   const elvenGauntletsRecipe = {
     ...elvenShieldRecipe,
     leather: 1,
     refinedMoonstone: 1
   };
+
+  const someEvent = async () => {
+    try {
+      await mock(true, 4000);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
   return (
-    <>
-      <h1>{JSON.stringify(elvenGauntletsRecipe, null, 4)}</h1>
+    <ErrorBoundary>
+      <Suspense fallback={<div>loading...</div>}>
+        <Router>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/contact">About</Link>
+            </li>
+            <li>
+              <button type="button" onClick={clickMe}>
+                CLICK ME
+              </button>
+            </li>
+          </ul>
+          <Switch>
+            <Route exact path="/" component={HelloWorld} />
+            <Route exact path="/contact" component={Contact} />
+            <Route component={() => <h1>Not found</h1>} />
+          </Switch>
+        </Router>
+        {/* <h1>{JSON.stringify(elvenGauntletsRecipe, null, 4)}</h1>
+      <button type="button" onClick={someEvent}>
+        click me
+      </button>
       <section className="hero" />
       <main>
         <section>
@@ -45,9 +94,10 @@ function App() {
         t121itle="mđct weđasbpack"
         titl2e="mđct weđasbpack"
         ti11tle="mđct weđasbpack"
-        {...data}
-      />
-    </>
+        {...data} */}
+        {/* /> */}
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

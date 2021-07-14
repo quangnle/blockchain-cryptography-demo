@@ -5,5 +5,8 @@
     // in files only using JSX (no state or React methods)
     ["@babel/preset-react", { "runtime": "automatic" }]
   ],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties"
+  ]
 }

@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 const commonPaths = require('./paths');
 
@@ -76,6 +77,7 @@ module.exports = {
     }
   },
   plugins: [
+    new ErrorOverlayPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin()
   ],
@@ -85,6 +87,7 @@ module.exports = {
     port: PORT,
     compress: true,
     hot: true,
+    overlay: false,
     historyApiFallback: true,
     watchContentBase: true,
     open: true

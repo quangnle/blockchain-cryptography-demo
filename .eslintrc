@@ -10,6 +10,8 @@
   ],
 
   "rules": {
+    "no-unused-vars": "warn",
+    "prefer-promise-reject-errors": "off",
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
