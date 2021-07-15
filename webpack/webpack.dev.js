@@ -85,6 +85,7 @@ module.exports = {
   devServer: {
     contentBase: commonPaths.publicPath,
     port: PORT,
+    host: '0.0.0.0',
     compress: true,
     hot: true,
     overlay: false,
