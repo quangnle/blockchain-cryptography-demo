@@ -53,16 +53,18 @@ function App() {
     <ErrorBoundary>
       <Suspense fallback={<div>loading...</div>}>
         <Router>
+          <h1>{process.env.REACT_APP_NAME} env variables</h1>
+          <h1>Author: {process.env.REACT_APP_AUTHOR}</h1>
           <ul>
             <li>
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/contact">About</Link>
+              <Link to="/contact">AboDSDSut</Link>
             </li>
             <li>
               <button type="button" onClick={clickMe}>
-                CLICK ME
+                CLICK Me Jisoossasasasas
               </button>
             </li>
           </ul>
