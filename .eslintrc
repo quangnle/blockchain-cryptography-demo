@@ -1,26 +1,57 @@
 {
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
   "root": true,
   "extends": [
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "airbnb",
-    "airbnb/hooks",
-    "plugin:prettier/recommended"
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/warnings"
   ],
-
+  "plugins": ["react", "react-hooks"],
   "rules": {
-    "no-unused-vars": "warn",
-    "prefer-promise-reject-errors": "off",
-    "no-param-reassign": "off",
-    "import/prefer-default-export": "off",
     "react/require-default-props": "off",
-    "import/no-extraneous-dependencies": "off",
-    "react/jsx-props-no-spreading": "off",
-    // "react/no-danger": "off", // it's self explainatory that no-danger should be used sparingly
     "react/react-in-jsx-scope": "off", // next.js does not require react in most components
+    "react/jsx-props-no-spreading": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-named-as-default": "off",
+    "no-unused-vars": "warn",
+    "no-param-reassign": "off",
     "no-console": "off", // no console statements allowed
+    "prefer-promise-reject-errors": "off",
+    "prefer-const": "warn",
+    // "react/no-danger": "off", // it's self explainatory that no-danger should be used sparingly
     // "prettier/prettier": "off"
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ]
+      }
+    ],
     "prettier/prettier": [
       "warn",
       {
@@ -37,10 +68,29 @@
     ] // don't show prettier errors as it will be fixed when saved anyway
   },
   "settings": {
-    "import/extensions": [".js", ".jsx"],
+    "import/extensions": [".jsx", ".js"],
     "react": {
-      "version": "detect"
+      "createClass": "createReactClass", // Regex for Component Factory to use,
+      // default to "createReactClass"
+      "pragma": "React", // Pragma to use, default to "React"
+      "fragment": "Fragment", // Fragment to use (may be a property of <pragma>), default to "Fragment"
+      "version": "detect", // React version. "detect" automatically picks the version you have installed.
+      // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+      // default to latest and warns if missing
+      // It will default to "detect" in the future
+      "flowVersion": "0.53" // Flow version
     },
+    "propWrapperFunctions": [
+      // The names of any function used to wrap propTypes, e.g. `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
+      "forbidExtraProps",
+      { "property": "freeze", "object": "Object" },
+      { "property": "myFavoriteWrapper" }
+    ],
+    "linkComponents": [
+      // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
+      "Hyperlink",
+      { "name": "Link", "linkAttribute": "to" }
+    ],
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx"]
@@ -48,15 +98,10 @@
       "babel-module": {
         "extensions": [".js", ".jsx"],
         "alias": {
-          "@components": "./src/components",
-          "@container": "./src/container"
+          "@/static": "./public/static",
+          "@/": "./src"
         }
       }
     }
-  },
-  "env": {
-    "node": true,
-    "browser": true,
-    "es6": true
   }
 }

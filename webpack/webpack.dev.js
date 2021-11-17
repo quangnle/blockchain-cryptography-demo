@@ -1,26 +1,40 @@
 const webpack = require('webpack');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const openBrowser = require('react-dev-utils/openBrowser');
 
 const commonPaths = require('./paths');
 
 const PORT = process.env.REACT_APP_PORT || 3000;
+const host = process.env.HOST || '0.0.0.0';
 
 module.exports = {
   mode: 'development',
-  target: 'web',
   module: {
     rules: [
       {
+        test: /\.(s[ac]ss|js)$/,
+        enforce: 'pre',
+        use: 'import-glob'
+      },
+      {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        options: {
-          plugins: [require.resolve('react-refresh/babel')]
-        },
         exclude: /(node-modules)/
       },
       {
-        test: /\.(s[ac]ss|css)$/,
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(s[ac]ss)$/,
         use: [
           'style-loader',
           {
@@ -37,6 +51,17 @@ module.exports = {
           }
         ]
       },
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         name: '[path][name].[ext]'
+      //       }
+      //     }
+      //   ]
+      // },
       {
         test: /\.(png|jpg|gif|svg)$/,
         use: [
@@ -76,22 +101,24 @@ module.exports = {
       module: false
     }
   },
-  plugins: [
-    new ErrorOverlayPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new ReactRefreshWebpackPlugin()
-  ],
   devtool: 'source-map',
   devServer: {
-    contentBase: commonPaths.publicPath,
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true
+      }
+    },
     port: PORT,
-    host: '0.0.0.0',
+    host,
     compress: true,
-    hot: true,
-    overlay: false,
     historyApiFallback: true,
-    watchContentBase: true,
-    open: true
+    onAfterSetupMiddleware: () => {
+      openBrowser && openBrowser(`http://127.0.0.1:${PORT}/`);
+    },
+    onListening: function () {
+      console.log('Listening on port:', PORT);
+    }
   },
   performance: {
     maxEntrypointSize: 800000

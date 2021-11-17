@@ -6,7 +6,6 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 
 const commonPaths = require('./paths');
-const paths = require('./paths');
 const getClientEnvironment = require('./env');
 
 const publicUrl = '';
@@ -14,15 +13,15 @@ const env = getClientEnvironment(publicUrl);
 module.exports = {
   entry: commonPaths.entryPath,
   resolve: {
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    extensions: ['*', '.js', '.jsx', '.css', '.scss'],
+    // modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    extensions: ['.jsx', '.js'],
     alias: {
-      '@components': path.resolve(__dirname, '../', 'src/components/'),
-      '@container': path.resolve(__dirname, '../', 'src/container/')
+      '@/static': path.resolve(__dirname, '../public/static/'),
+      '@': path.resolve(__dirname, '../src/')
     }
   },
   plugins: [
-    new ModuleNotFoundPlugin(paths.root),
+    new ModuleNotFoundPlugin(commonPaths.root),
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
     new webpack.DefinePlugin(env.stringified),
     new webpack.ProgressPlugin(),

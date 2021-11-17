@@ -4,7 +4,7 @@ import './index.css';
 
 const HelloWorld = ({ title }) => (
   <div
-    className="hello-world"
+    className="hello-world hero"
     a="asda"
     as="asda"
     aas="asda"
@@ -13,6 +13,17 @@ const HelloWorld = ({ title }) => (
     aqw="asda"
   >
     {title}
+    <div
+      className="hello-world hero"
+      a="asda"
+      as="asda"
+      aas="asda"
+      aq="asda"
+      aa="asda"
+      aqw="asda"
+    >
+      {title}
+    </div>
   </div>
 );
 

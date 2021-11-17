@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -7,8 +9,6 @@ const isWsl = require('is-wsl');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
-const fs = require('fs');
-const path = require('path');
 const commonPaths = require('./paths');
 
 const dirs = fs.readdirSync(commonPaths.publicPath);
@@ -18,7 +18,7 @@ const copyPluginPatterns = dirs
   .map(dir => {
     return {
       from: dir,
-      to: '',
+      to: 'public',
       context: path.resolve('public')
     };
   });
@@ -28,6 +28,11 @@ module.exports = {
   target: 'browserslist',
   module: {
     rules: [
+      {
+        test: /\.(s[ac]ss|js)$/,
+        enforce: 'pre',
+        use: 'import-glob'
+      },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',

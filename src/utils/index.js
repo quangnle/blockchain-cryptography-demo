@@ -1,3 +1,5 @@
+import ra from '../feats/**/*.js';
+
 const hello = ({ name, phone, address, age }) => {
   const data = {
     name,
@@ -19,5 +21,7 @@ const hello = ({ name, phone, address, age }) => {
   ];
   return [res, data, 'HELLLLLL'];
 };
+export const MODULE_EX = ra;
+console.log('ra', ra);
 
 export default hello;
