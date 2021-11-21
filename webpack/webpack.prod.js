@@ -18,7 +18,7 @@ const copyPluginPatterns = dirs
   .map(dir => {
     return {
       from: dir,
-      to: '',
+      to: 'public',
       context: path.resolve('public')
     };
   });
