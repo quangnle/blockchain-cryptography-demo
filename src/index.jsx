@@ -1,8 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from './App';
+import { store } from './store';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <HelmetProvider>
+      <App />
+      <ToastContainer />
+    </HelmetProvider>
+  </Provider>,
+  document.getElementById('root')
+);
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker

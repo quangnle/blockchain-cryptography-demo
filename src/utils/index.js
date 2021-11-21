@@ -1,23 +1,75 @@
-const hello = ({ name, phone, address, age }) => {
-  const data = {
-    name,
-    age,
-    address,
-    phone
-  };
-  const res = [
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' },
-    { name: 'Eren' }
-  ];
-  return [res, data, 'HELLLLLL'];
+import { getToken } from '@/helpers/local-storage';
+import { isEqual } from 'lodash';
+
+export const IS_PROD = process.env.NODE_ENV === 'production';
+
+export const IS_BROWSER = typeof window !== 'undefined';
+
+export const getHeaders = options =>
+  Object.assign(
+    {},
+    {
+      Authorization: `Bearer ${getToken()}`,
+      'Content-Type': 'application/json'
+    },
+    options
+  );
+
+export const compareTwoObject = (object1 = {}, object2 = {}) => {
+  return isEqual(object1, object2);
 };
 
-export default hello;
+export const isEmptyObject = object => {
+  return (
+    !object ||
+    (Object.keys(object).length === 0 && object.constructor === Object)
+  );
+};
+
+export const isObject = obj =>
+  obj && typeof obj === 'object' && !Array.isArray(obj);
+
+export const ensureArray = data => (Array.isArray(data) ? data : []);
+
+export const ensureObject = (obj, defaultValue) =>
+  isObject(obj) ? obj : isObject(defaultValue) ? defaultValue : {};
+
+export const parseBoolean = val =>
+  !val ||
+  val === 'false' ||
+  val === 'null' ||
+  val === 'undefined' ||
+  val === '0'
+    ? false
+    : true;
+
+export const validateEmail = email => {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
+};
+
+export const DATE_FORMAT = 'MM/DD/YYYY';
+
+export const TIME_FORMAT = 'hh:mm:ss A';
+
+export const DATE_TIME_FORMAT = `${DATE_FORMAT} ${TIME_FORMAT}`;
+
+export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+export const isPromise = func => func && typeof func.then === 'function';
+
+export const scrollTo = (element, rest) => {
+  // const isIE = detectIE()
+  const supportsNativeSmoothScroll =
+    'scrollBehavior' in document.documentElement.style;
+
+  if (!supportsNativeSmoothScroll) {
+    // const [x, y] = rest;
+    // const offsetTop = x?.top || x || 0;
+    // const offsetLeft = x?.left || y || 0;
+    // element.scrollTop = offsetTop;
+    // element.scrollLeft = offsetLeft;
+  } else {
+    element.scrollTo(rest);
+  }
+};

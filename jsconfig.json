@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@container/*": ["src/container/*"]
+      "@/static/*": ["public/static/*"],
+      "@/*": ["src/*"]
     },
     "jsx": "react"
   },

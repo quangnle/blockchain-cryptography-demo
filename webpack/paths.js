@@ -12,5 +12,6 @@ module.exports = {
   publicPath: path.resolve(__dirname, '../', 'public'),
   entryPath: path.resolve(__dirname, '../', 'src/index.jsx'),
   templatePath: path.resolve(__dirname, '../', 'public/index.html'),
+  appPackageJson: resolveApp('package.json'),
   dotenv: resolveApp('.env')
 };

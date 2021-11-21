@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -6,9 +8,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const isWsl = require('is-wsl');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-
-const fs = require('fs');
-const path = require('path');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const commonPaths = require('./paths');
 
 const dirs = fs.readdirSync(commonPaths.publicPath);
@@ -29,9 +29,20 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(s[ac]ss|js)$/,
+        enforce: 'pre',
+        use: 'import-glob'
+      },
+      {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: /(node-modules)/
+        exclude: /(node-modules)/,
+        options: {
+          plugins: ['lodash'],
+          presets: [
+            ['@babel/preset-env', { modules: false, targets: { node: 4 } }]
+          ]
+        }
       },
       {
         test: /\.(s[ac]ss|css)$/,
@@ -52,33 +63,29 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'static/media/[name].[contenthash:6].[ext]'
-            }
-          }
-        ]
+        test: /\.svg$/,
+        use: ['@svgr/webpack']
       },
       {
-        test: /\.(woff2|ttf|woff|eot)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'static/fonts/[name].[ext]'
-            }
-          }
-        ]
+        test: /\.(png|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/media/[name].[contenthash:6].[ext]'
+        }
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/fonts/[name].[ext]'
+        }
       }
     ]
   },
   output: {
     path: commonPaths.outputPath,
-    filename: 'static/js/main.[contenthash:6].js',
-    chunkFilename: 'static/js/main.[contenthash:6].js',
+    filename: 'static/js/[name].[contenthash:6].js',
+    chunkFilename: 'static/js/[name].[contenthash:6].chunk.js',
     publicPath: '/',
     environment: {
       arrowFunction: false,
@@ -95,7 +102,8 @@ module.exports = {
       patterns: copyPluginPatterns
     }),
     new MiniCssExtractPlugin({
-      filename: 'static/css/[name].[contenthash:6].css'
+      filename: 'static/css/[name].[contenthash:6].css',
+      chunkFilename: 'static/css/[name].[contenthash:6].chunk.css'
     }),
     new CleanWebpackPlugin(),
     new CompressionPlugin({
@@ -113,6 +121,14 @@ module.exports = {
         // public/ and not a SPA route
         new RegExp('/[^/]+\\.[^/]+$')
       ]
+    }),
+    new ImageMinimizerPlugin({
+      severityError: 'warning', // Ignore errors on corrupted images
+      minimizerOptions: {
+        plugins: ['gifsicle']
+      },
+      // Disable `loader`
+      loader: false
     })
   ],
   optimization: {
