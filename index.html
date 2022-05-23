@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Blockchain Cryptographic Demo</title>
+		<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="hash.js"></script>
+		<script src="caesar.js"></script>
+		<script src="rsa.js"></script>
+		<script src="fnv1s.js"></script>
+		<script src="murmur.js"></script>
+		<script>
+		
+		function dec2bin(dec) {
+			return (dec >>> 0).toString(2);
+		}
+		
+		function hashButtonClicked(){
+			let hashContent = document.getElementById('content1').value;
+			document.getElementById('hash1').value = SHA256(hashContent);
+		}	
+			
+		function nonceButtonClicked(){
+			let id = document.getElementById('blockid').value;
+			let hashContent = document.getElementById('content2').value;
+			let nonce = 0;
+			do {			
+				nonce ++;
+				let content = id + hashContent + nonce;
+				let hashValue = SHA256(content);
+				if (hashValue.substring(0, 4) == '0000'){
+					document.getElementById('nonce').value = nonce;
+					document.getElementById('hash2').value = hashValue;
+					document.getElementById('blockcontent').innerText = 'Hashed content: ' + content;
+					break;
+				}
+			} while (nonce < 1000000);
+			
+			if (nonce  >= 1000000) alert('Cant find nonce value within 1 million steps');
+		}
+		
+		function encryptClicked(){			
+			let key = document.getElementById('key').value;
+			let crypto = new Caesar(key * 1);
+			let msg = document.getElementById('originMsg').value;
+			document.getElementById('enMsg').value = crypto.encrypt(msg);
+		}
+		
+		function decryptClicked(){
+			let key = document.getElementById('key').value;
+			let crypto = new Caesar(key * 1);
+			let msg = document.getElementById('enMsg').value;
+			document.getElementById('originMsg').value = crypto.decrypt(msg);
+		}
+		
+		function computeKeysClicked(){
+			let p = document.getElementById('pValue').value;
+			let q = document.getElementById('qValue').value;
+			
+			var rsa = new RSA(p, q);
+			rsa.computeKeys();
+			
+			document.getElementById('keyInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
+		}
+		
+		function encryptRSAClicked(){			
+			let p = document.getElementById('pValue').value;
+			let q = document.getElementById('qValue').value;
+			
+			var rsa = new RSA(p, q);
+			rsa.computeKeys();
+			
+			let msg = document.getElementById('originRsaMsg').value;
+			document.getElementById('encRsaMsg').value = rsa.encrypt(msg);
+		}
+		
+		function decryptRSAClicked(){			
+			let p = document.getElementById('pValue').value;
+			let q = document.getElementById('qValue').value;
+			
+			var rsa = new RSA(p, q);
+			rsa.computeKeys();
+			
+			let msg = document.getElementById('encRsaMsg').value;
+			document.getElementById('originRsaMsg').value = rsa.encrypt(msg);
+		}
+		
+		function computeSigKeysClicked(){
+			let p = document.getElementById('pSigValue').value;
+			let q = document.getElementById('qSigValue').value;
+			
+			var rsa = new RSA(p, q);
+			rsa.computeKeys();
+			
+			document.getElementById('keySigInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
+		}
+		
+		function digitalSignClicked(){			
+			let p = document.getElementById('pSigValue').value;
+			let q = document.getElementById('qSigValue').value;
+						
+			var rsa = new RSA(p, q);
+			rsa.computeKeys();
+			
+			let msg = document.getElementById('originSigMsg').value;
+			document.getElementById('signature').value = rsa.signature(msg);
+		}
+		
+		function verifyClicked(){			
+			let p = document.getElementById('pSigValue').value;
+			let q = document.getElementById('qSigValue').value;
+						
+			var rsa = new RSA(p, q);
+			rsa.computeKeys();
+			
+			let msg = document.getElementById('originSigMsg').value;
+			let signature = document.getElementById('signature').value;
+			
+			if (rsa.verify(msg, signature))
+				alert('valid signature');
+			else
+				alert('invalid signature');
+		}
+		
+		</script>
+	</head>
+	<body>
+		<div class="d-flex align-items-center p-3 my-3 text-blue bg-purple rounded shadow-sm">
+			<img class="me-3" src="imgs/logo.svg" alt="" width="140" height="70">
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col" />
+				<div class="col-12">
+					<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="pills-hash-tab" data-bs-toggle="pill" data-bs-target="#pills-hash" type="button" role="tab" aria-controls="pills-hash" aria-selected="true">Hash</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-nonce-tab" data-bs-toggle="pill" data-bs-target="#pills-nonce" type="button" role="tab" aria-controls="pills-nonce" aria-selected="false">Nonce</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-chain-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Chain</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-merkle-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Merkle Tree</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-bloom-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Bloom Filter</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-caesar-tab" data-bs-toggle="pill" data-bs-target="#pills-caesar" type="button" role="tab" aria-controls="pills-caesar" aria-selected="false">Caesar</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-rsa-tab" data-bs-toggle="pill" data-bs-target="#pills-rsa" type="button" role="tab" aria-controls="pills-rsa" aria-selected="false">RSA</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-ds-tab" data-bs-toggle="pill" data-bs-target="#pills-ds" type="button" role="tab" aria-controls="pills-ds" aria-selected="false">Digital Signature</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-izkp-tab" data-bs-toggle="pill" data-bs-target="#pills-izkp" type="button" role="tab" aria-controls="pills-izkp" aria-selected="false">Interactive ZKP</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-nizkp-tab" data-bs-toggle="pill" data-bs-target="#pills-nizkp" type="button" role="tab" aria-controls="pills-nizkp" aria-selected="false">Non-Interactive ZKP</button>
+						</li>
+					</ul>
+					<!-- headers -->
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade show active" id="pills-hash" role="tabpanel" aria-labelledby="pills-hash-tab" tabindex="0">
+							<form>
+								<div class="mb-3">
+									<label for="content1" class="form-label">Content</label>
+									<textarea class="form-control" id="content1" rows="3"></textarea>
+								</div>
+								<button onclick="hashButtonClicked()" class="btn btn-primary">Get Hash</button>
+								<div class="mb-3">
+									<label for="hash1" class="form-label">Hash value</label>
+									<input class="form-control" id="hash1" rows="3"/>
+								</div>
+							</form>
+						</div> <!-- hash -->
+						<div class="tab-pane fade" id="pills-nonce" role="tabpanel" aria-labelledby="pills-nonce-tab" tabindex="0"> 
+							<form>
+								<div class="mb-3">
+									<label for="nonce" class="form-label">Block Id</label>
+									<input class="form-control" id="blockid" rows="3"/>
+								</div>
+								<div class="mb-3">
+									<label for="content1" class="form-label">Content</label>
+									<textarea class="form-control" id="content2" rows="3"></textarea>
+								</div>
+								<button onclick="nonceButtonClicked()" class="btn btn-primary">Calculate Nonce</button>
+								<div class="mb-3">
+									<label for="nonce" class="form-label">Nonce</label>
+									<input class="form-control" id="nonce" rows="3"/>
+									<label for="content2" id="blockcontent" class="form-label"></label>
+									<input class="form-control" id="hash2" rows="3"/>
+								</div>
+							</form>
+						</div> <!-- nonce -->
+						<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">						
+						  ...
+						</div> <!-- chain -->
+						<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+						  ...
+						</div> <!-- merkle -->
+						<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+						  ...
+						</div> <!-- bloom -->
+						<div class="tab-pane fade" id="pills-caesar" role="tabpanel" aria-labelledby="pills-caesar-tab" tabindex="0">		
+							<form>
+								<div class="mb-3">
+									<label for="nonce" class="form-label">Key</label>
+									<input class="form-control" id="key" rows="3"/>
+								</div>
+								<div class="mb-3">
+									<label for="content1" class="form-label">Content</label>
+									<textarea class="form-control" id="originMsg" rows="3"></textarea>
+								</div>
+								<button onclick="encryptClicked()" class="btn btn-primary">Encrypt</button>
+								<button onclick="decryptClicked()" class="btn btn-primary">Decrypt</button>
+								<div class="mb-3">
+									<label for="content1" class="form-label">Content</label>
+									<textarea class="form-control" id="enMsg" rows="3"></textarea>
+								</div>
+							</form>						
+						</div> <!-- casesar -->
+						<div class="tab-pane fade" id="pills-rsa" role="tabpanel" aria-labelledby="pills-rsa-tab" tabindex="0">
+							<form>
+								<div class="mb-3">
+									<label for="nonce" class="form-label">p</label>
+									<input class="form-control" id="pValue" rows="3"/>
+									<label for="nonce" class="form-label">q</label>
+									<input class="form-control" id="qValue" rows="3"/>
+								</div>
+								<button onclick="computeKeysClicked()" class="btn btn-primary">Compute Keys</button>
+								<div class="mb-3">
+									<label for="keyInfo" class="form-label">Key Information</label>
+									<textarea class="form-control" id="keyInfo" rows="3"></textarea>
+								</div>
+								<div class="mb-3">
+									<label for="originRsaMsg" class="form-label">Original Message</label>
+									<textarea class="form-control" id="originRsaMsg" rows="3"></textarea>
+								</div>
+								<button onclick="encryptRSAClicked()" class="btn btn-primary">Encrypt</button>
+								<button onclick="decryptRSAClicked()" class="btn btn-primary">Decrypt</button>
+								<div class="mb-3">
+									<label for="encRsaMsg" class="form-label">Encrypted Message</label>
+									<textarea class="form-control" id="encRsaMsg" rows="3"></textarea>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="pills-ds" role="tabpanel" aria-labelledby="pills-ds-tab" tabindex="0">
+							<form>
+								<div class="mb-3">
+									<label for="nonce" class="form-label">p</label>
+									<input class="form-control" id="pSigValue" rows="3"/>
+									<label for="nonce" class="form-label">q</label>
+									<input class="form-control" id="qSigValue" rows="3"/>
+								</div>
+								<button onclick="computeSigKeysClicked()" class="btn btn-primary">Compute Keys</button>
+								<div class="mb-3">
+									<label for="keySigInfo" class="form-label">Key Information</label>
+									<textarea class="form-control" id="keySigInfo" rows="3"></textarea>
+								</div>
+								<div class="mb-3">
+									<label for="originSigMsg" class="form-label">Original Message</label>
+									<textarea class="form-control" id="originSigMsg" rows="3"></textarea>
+								</div>
+								<button onclick="digitalSignClicked()" class="btn btn-primary">Digitally Sign</button>
+								<button onclick="verifyClicked()" class="btn btn-primary">Verify Signature</button>
+								<div class="mb-3">
+									<label for="signature" class="form-label">Digital Signature</label>
+									<textarea class="form-control" id="signature" rows="3"></textarea>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="pills-izkp" role="tabpanel" aria-labelledby="pills-izkp-tab" tabindex="0">
+						  ...
+						</div>
+						<div class="tab-pane fade" id="pills-nizkp" role="tabpanel" aria-labelledby="pills-nizkp-tab" tabindex="0">
+						  ...
+						</div>
+					</div>
+				</div>
+				<div class="col" />
+			</div>
+		</div>
+		
+		
+	</body>
+</html>
+
