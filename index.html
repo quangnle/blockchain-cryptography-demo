@@ -15,11 +15,12 @@
 		
 		function dec2bin(dec) {
 			return (dec >>> 0).toString(2);
-		}
+		}	
 		
 		function hashButtonClicked(){
 			let hashContent = document.getElementById('content1').value;
 			document.getElementById('hash1').value = SHA256(hashContent);
+			event.preventDefault();
 		}	
 			
 		function nonceButtonClicked(){
@@ -33,12 +34,62 @@
 				if (hashValue.substring(0, 4) == '0000'){
 					document.getElementById('nonce').value = nonce;
 					document.getElementById('hash2').value = hashValue;
-					document.getElementById('blockcontent').innerText = 'Hashed content: ' + content;
+					document.getElementById('blockcontent').innerText = "Hashed content: " + content;
 					break;
 				}
 			} while (nonce < 1000000);
 			
 			if (nonce  >= 1000000) alert('Cant find nonce value within 1 million steps');
+			event.preventDefault();
+		}
+		
+		var nameList = [];
+		var bitList =  Array.from(new Array(15), () => 0);
+		function addNameClicked(){
+			let name = document.getElementById('namePerson').value;			
+			let h1 = new FNV1s();
+			let h2 = new Murmur();
+			
+			let n1 = h1.hash(name) % 15;			
+			let n2 = h2.hash(name) % 15;
+			
+			nameList.push(name);
+			let st = "";
+			for(let i = 0; i< nameList.length; i++){
+				st+= "<li class=\"list-group-item\">" + nameList[i]+ "</li>";				
+				let m1 = h1.hash(nameList[i]) % 15;
+				let m2 = h2.hash(nameList[i]) % 15;
+				bitList[m1] = 1;
+				bitList[m2] = 1;
+			}			
+			
+			// person list
+			document.getElementById('name-list').innerHTML = st;
+			
+			// bloom filter
+			for(let i = 0; i< 15; i++){
+				if (i == n1 || i == n2){
+					document.getElementById('bit'+i).setAttribute("class", "list-group-item list-group-item-dark");
+				} else {
+					document.getElementById('bit'+i).setAttribute("class", "list-group-item");
+				}
+				document.getElementById('bit'+i).innerHTML = bitList[i];
+			}
+			
+			document.getElementById('namePerson').value = "";
+			event.preventDefault();
+		}
+		
+		function checkNameClicked(){
+			let name = document.getElementById('namePerson').value;
+			let h1 = new FNV1s();
+			let h2 = new Murmur();			
+			let n1 = h1.hash(name) % 15;			
+			let n2 = h2.hash(name) % 15;
+			
+			if (bitList[n1] + bitList[n2] == 2) alert(name + ' might be included in the list');
+			else alert(name + ' is not in the list');	
+			event.preventDefault();			
 		}
 		
 		function encryptClicked(){			
@@ -46,6 +97,7 @@
 			let crypto = new Caesar(key * 1);
 			let msg = document.getElementById('originMsg').value;
 			document.getElementById('enMsg').value = crypto.encrypt(msg);
+			event.preventDefault();
 		}
 		
 		function decryptClicked(){
@@ -53,6 +105,7 @@
 			let crypto = new Caesar(key * 1);
 			let msg = document.getElementById('enMsg').value;
 			document.getElementById('originMsg').value = crypto.decrypt(msg);
+			event.preventDefault();
 		}
 		
 		function computeKeysClicked(){
@@ -63,6 +116,7 @@
 			rsa.computeKeys();
 			
 			document.getElementById('keyInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
+			event.preventDefault();
 		}
 		
 		function encryptRSAClicked(){			
@@ -74,6 +128,7 @@
 			
 			let msg = document.getElementById('originRsaMsg').value;
 			document.getElementById('encRsaMsg').value = rsa.encrypt(msg);
+			event.preventDefault();
 		}
 		
 		function decryptRSAClicked(){			
@@ -85,6 +140,7 @@
 			
 			let msg = document.getElementById('encRsaMsg').value;
 			document.getElementById('originRsaMsg').value = rsa.encrypt(msg);
+			event.preventDefault();
 		}
 		
 		function computeSigKeysClicked(){
@@ -95,6 +151,7 @@
 			rsa.computeKeys();
 			
 			document.getElementById('keySigInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
+			event.preventDefault();
 		}
 		
 		function digitalSignClicked(){			
@@ -106,6 +163,7 @@
 			
 			let msg = document.getElementById('originSigMsg').value;
 			document.getElementById('signature').value = rsa.signature(msg);
+			event.preventDefault();
 		}
 		
 		function verifyClicked(){			
@@ -122,6 +180,8 @@
 				alert('valid signature');
 			else
 				alert('invalid signature');
+				
+			event.preventDefault();
 		}
 		
 		</script>
@@ -142,13 +202,13 @@
 							<button class="nav-link" id="pills-nonce-tab" data-bs-toggle="pill" data-bs-target="#pills-nonce" type="button" role="tab" aria-controls="pills-nonce" aria-selected="false">Nonce</button>
 						</li>
 						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="pills-chain-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Chain</button>
+							<button class="nav-link" id="pills-chain-tab" data-bs-toggle="pill" data-bs-target="#pills-chain" type="button" role="tab" aria-controls="pills-chain" aria-selected="false">Chain</button>
 						</li>
 						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="pills-merkle-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Merkle Tree</button>
+							<button class="nav-link" id="pills-merkle-tab" data-bs-toggle="pill" data-bs-target="#pills-merkle" type="button" role="tab" aria-controls="pills-merkle" aria-selected="false">Merkle Tree</button>
 						</li>
 						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="pills-bloom-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Bloom Filter</button>
+							<button class="nav-link" id="pills-bloom-tab" data-bs-toggle="pill" data-bs-target="#pills-bloom" type="button" role="tab" aria-controls="pills-bloom" aria-selected="false">Bloom Filter</button>
 						</li>
 						<li class="nav-item" role="presentation">
 							<button class="nav-link" id="pills-caesar-tab" data-bs-toggle="pill" data-bs-target="#pills-caesar" type="button" role="tab" aria-controls="pills-caesar" aria-selected="false">Caesar</button>
@@ -184,7 +244,7 @@
 						<div class="tab-pane fade" id="pills-nonce" role="tabpanel" aria-labelledby="pills-nonce-tab" tabindex="0"> 
 							<form>
 								<div class="mb-3">
-									<label for="nonce" class="form-label">Block Id</label>
+									<label for="blockid" class="form-label">Block Id</label>
 									<input class="form-control" id="blockid" rows="3"/>
 								</div>
 								<div class="mb-3">
@@ -200,14 +260,48 @@
 								</div>
 							</form>
 						</div> <!-- nonce -->
-						<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">						
+						<div class="tab-pane fade" id="pills-chain" role="tabpanel" aria-labelledby="pills-chain-tab" tabindex="0">						
 						  ...
 						</div> <!-- chain -->
-						<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+						<div class="tab-pane fade" id="pills-merkle" role="tabpanel" aria-labelledby="pills-merkle-tab" tabindex="0">
 						  ...
 						</div> <!-- merkle -->
-						<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-						  ...
+						<div class="tab-pane fade" id="pills-bloom" role="tabpanel" aria-labelledby="pills-bloom-tab" tabindex="0">
+							<form>
+								<div class="mb-3">
+									<label for="lst" class="form-label">Bloom Filter</label>
+									<ul id="lst" class="list-group list-group-horizontal-xxl">
+										<li id="bit0" class="list-group-item">0</li>
+										<li id="bit1" class="list-group-item">0</li>
+										<li id="bit2" class="list-group-item">0</li>
+										<li id="bit3" class="list-group-item">0</li>
+										<li id="bit4" class="list-group-item">0</li>
+										<li id="bit5" class="list-group-item">0</li>
+										<li id="bit6" class="list-group-item">0</li>
+										<li id="bit7" class="list-group-item">0</li>
+										<li id="bit8" class="list-group-item">0</li>
+										<li id="bit9" class="list-group-item">0</li>
+										<li id="bit10" class="list-group-item">0</li>
+										<li id="bit11" class="list-group-item">0</li>
+										<li id="bit12" class="list-group-item">0</li>
+										<li id="bit13" class="list-group-item">0</li>
+										<li id="bit14" class="list-group-item">0</li>
+									</ul>
+								</div>								
+								
+								<div class="mb-3">
+									<label for="namePerson" class="form-label">Name</label>
+									<input class="form-control" id="namePerson" rows="3"/>
+								</div>
+								<button onclick="addNameClicked()" class="btn btn-primary">Add</button>
+								<button onclick="checkNameClicked()" class="btn btn-primary">Check</button>
+								<div class="mb-3">
+									<label for="name-list" class="form-label">Person List</label>
+									<ul id="name-list" class="list-group">
+										<!--<li class="list-group-item">Jack</li>-->
+									</ul>
+								</div>								
+							</form>
 						</div> <!-- bloom -->
 						<div class="tab-pane fade" id="pills-caesar" role="tabpanel" aria-labelledby="pills-caesar-tab" tabindex="0">		
 							<form>
@@ -251,7 +345,7 @@
 									<textarea class="form-control" id="encRsaMsg" rows="3"></textarea>
 								</div>
 							</form>
-						</div>
+						</div> <!-- rsa -->
 						<div class="tab-pane fade" id="pills-ds" role="tabpanel" aria-labelledby="pills-ds-tab" tabindex="0">
 							<form>
 								<div class="mb-3">

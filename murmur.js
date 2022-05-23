@@ -11,8 +11,6 @@ var Murmur = function() {
         var h = seed ^ str.length;
         var length = str.length;
         var currentIndex = 0;
-		
-		console.log(seed, str.length, h);
 
         while (length >= 4) {
             var k = UInt32(str, currentIndex);
