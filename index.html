@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Blockchain Cryptographic Demo</title>
 		<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="hash.js"></script>
 		<script src="caesar.js"></script>
@@ -13,28 +14,31 @@
 		<script src="murmur.js"></script>
 		<script>
 		
+		const $ = document.querySelector.bind(document);
+		const $$ = document.querySelectorAll.bind(document);
+
 		function dec2bin(dec) {
 			return (dec >>> 0).toString(2);
 		}	
 		
 		function hashButtonClicked(){
-			let hashContent = document.getElementById('content1').value;
-			document.getElementById('hash1').value = SHA256(hashContent);
+			let hashContent = $('#content1').value;
+			$('#hash1').value = SHA256(hashContent);
 			event.preventDefault();
 		}	
 			
 		function nonceButtonClicked(){
-			let id = document.getElementById('blockid').value;
-			let hashContent = document.getElementById('content2').value;
+			let id = $('#blockid').value;
+			let hashContent = $('#content2').value;
 			let nonce = 0;
 			do {			
 				nonce ++;
 				let content = id + hashContent + nonce;
 				let hashValue = SHA256(content);
 				if (hashValue.substring(0, 4) == '0000'){
-					document.getElementById('nonce').value = nonce;
-					document.getElementById('hash2').value = hashValue;
-					document.getElementById('blockcontent').innerText = "Hashed content: " + content;
+					$('#nonce').value = nonce;
+					$('#hash2').value = hashValue;
+					$('#blockcontent').innerText = "Hashed content: " + content;
 					break;
 				}
 			} while (nonce < 1000000);
@@ -46,7 +50,7 @@
 		var nameList = [];
 		var bitList =  Array.from(new Array(15), () => 0);
 		function addNameClicked(){
-			let name = document.getElementById('namePerson').value;			
+			let name = $('#namePerson').value;			
 			let h1 = new FNV1s();
 			let h2 = new Murmur();
 			
@@ -64,24 +68,24 @@
 			}			
 			
 			// person list
-			document.getElementById('name-list').innerHTML = st;
+			$('#name-list').innerHTML = st;
 			
 			// bloom filter
 			for(let i = 0; i< 15; i++){
 				if (i == n1 || i == n2){
-					document.getElementById('bit'+i).setAttribute("class", "list-group-item list-group-item-dark");
+					$('#bit'+i).setAttribute("class", "list-group-item list-group-item-dark");
 				} else {
-					document.getElementById('bit'+i).setAttribute("class", "list-group-item");
+					$('#bit'+i).setAttribute("class", "list-group-item");
 				}
-				document.getElementById('bit'+i).innerHTML = bitList[i];
+				$('#bit'+i).innerHTML = bitList[i];
 			}
 			
-			document.getElementById('namePerson').value = "";
+			$('#namePerson').value = "";
 			event.preventDefault();
 		}
 		
 		function checkNameClicked(){
-			let name = document.getElementById('namePerson').value;
+			let name = $('#namePerson').value;
 			let h1 = new FNV1s();
 			let h2 = new Murmur();			
 			let n1 = h1.hash(name) % 15;			
@@ -93,88 +97,88 @@
 		}
 		
 		function encryptClicked(){			
-			let key = document.getElementById('key').value;
+			let key = $('#key').value;
 			let crypto = new Caesar(key * 1);
-			let msg = document.getElementById('originMsg').value;
-			document.getElementById('enMsg').value = crypto.encrypt(msg);
+			let msg = $('#originMsg').value;
+			$('#enMsg').value = crypto.encrypt(msg);
 			event.preventDefault();
 		}
 		
 		function decryptClicked(){
-			let key = document.getElementById('key').value;
+			let key = $('#key').value;
 			let crypto = new Caesar(key * 1);
-			let msg = document.getElementById('enMsg').value;
-			document.getElementById('originMsg').value = crypto.decrypt(msg);
+			let msg = $('#enMsg').value;
+			$('#originMsg').value = crypto.decrypt(msg);
 			event.preventDefault();
 		}
 		
 		function computeKeysClicked(){
-			let p = document.getElementById('pValue').value;
-			let q = document.getElementById('qValue').value;
+			let p = $('#pValue').value;
+			let q = $('#qValue').value;
 			
 			var rsa = new RSA(p, q);
 			rsa.computeKeys();
 			
-			document.getElementById('keyInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
+			$('#keyInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
 			event.preventDefault();
 		}
 		
 		function encryptRSAClicked(){			
-			let p = document.getElementById('pValue').value;
-			let q = document.getElementById('qValue').value;
+			let p = $('#pValue').value;
+			let q = $('#qValue').value;
 			
 			var rsa = new RSA(p, q);
 			rsa.computeKeys();
 			
-			let msg = document.getElementById('originRsaMsg').value;
-			document.getElementById('encRsaMsg').value = rsa.encrypt(msg);
+			let msg = $('#originRsaMsg').value;
+			$('#encRsaMsg').value = rsa.encrypt(msg);
 			event.preventDefault();
 		}
 		
 		function decryptRSAClicked(){			
-			let p = document.getElementById('pValue').value;
-			let q = document.getElementById('qValue').value;
+			let p = $('#pValue').value;
+			let q = $('#qValue').value;
 			
 			var rsa = new RSA(p, q);
 			rsa.computeKeys();
 			
-			let msg = document.getElementById('encRsaMsg').value;
-			document.getElementById('originRsaMsg').value = rsa.encrypt(msg);
+			let msg = $('#encRsaMsg').value;
+			$('#originRsaMsg').value = rsa.encrypt(msg);
 			event.preventDefault();
 		}
 		
 		function computeSigKeysClicked(){
-			let p = document.getElementById('pSigValue').value;
-			let q = document.getElementById('qSigValue').value;
+			let p = $('#pSigValue').value;
+			let q = $('#qSigValue').value;
 			
 			var rsa = new RSA(p, q);
 			rsa.computeKeys();
 			
-			document.getElementById('keySigInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
+			$('#keySigInfo').value = "public key = " + rsa.pk + "\n" + "private key = " + rsa.sk;
 			event.preventDefault();
 		}
 		
 		function digitalSignClicked(){			
-			let p = document.getElementById('pSigValue').value;
-			let q = document.getElementById('qSigValue').value;
+			let p = $('#pSigValue').value;
+			let q = $('#qSigValue').value;
 						
 			var rsa = new RSA(p, q);
 			rsa.computeKeys();
 			
-			let msg = document.getElementById('originSigMsg').value;
-			document.getElementById('signature').value = rsa.signature(msg);
+			let msg = $('#originSigMsg').value;
+			$('#signature').value = rsa.signature(msg);
 			event.preventDefault();
 		}
 		
 		function verifyClicked(){			
-			let p = document.getElementById('pSigValue').value;
-			let q = document.getElementById('qSigValue').value;
+			let p = $('#pSigValue').value;
+			let q = $('#qSigValue').value;
 						
 			var rsa = new RSA(p, q);
 			rsa.computeKeys();
 			
-			let msg = document.getElementById('originSigMsg').value;
-			let signature = document.getElementById('signature').value;
+			let msg = $('#originSigMsg').value;
+			let signature = $('#signature').value;
 			
 			if (rsa.verify(msg, signature))
 				alert('valid signature');
@@ -195,7 +199,7 @@
 				<div class="col" />
 				<div class="col-12">
 					<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-						<li class="nav-item" role="presentation">
+						<li class="nav-item " role="presentation">
 							<button class="nav-link active" id="pills-hash-tab" data-bs-toggle="pill" data-bs-target="#pills-hash" type="button" role="tab" aria-controls="pills-hash" aria-selected="true">Hash</button>
 						</li>
 						<li class="nav-item" role="presentation">
@@ -264,7 +268,52 @@
 						  ...
 						</div> <!-- chain -->
 						<div class="tab-pane fade" id="pills-merkle" role="tabpanel" aria-labelledby="pills-merkle-tab" tabindex="0">
-						  ...
+								<!-- head content merkle -->
+								<div class="merkle__list w-100 pb-3 overflow-auto gap-3">
+									<div class="merkle__block-item  rounded bg-primary bg-gradient p-3">
+										<div class="mb-3 row">
+											<label for="Block" class="col-sm-2 col-form-label fw-bold">Block:</label>
+											<div class="col-sm-10">
+												<div class="input-group">
+													<span class="input-group-text" id="basic-addon1">#</span>
+													<input type="number" class="form-control" id="Block" value="1" placeholder="Username" aria-label="Block" aria-describedby="basic-addon1">
+												</div>
+											</div>
+										</div>
+										<div class="mb-3 row">
+											<label for="Nonce" class="col-sm-2 col-form-label fw-bold">Nonce:</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" id="Nonce" value="11316">
+											</div>
+										</div>
+										<div class="mb-3 row">
+											<label for="Data" class="col-sm-2 col-form-label fw-bold">Data:</label>
+											<div class="col-sm-10">
+												<textarea class="form-control" id="Data" rows="8"></textarea>
+											</div>
+										</div>
+										<div class="mb-3 row">
+											<label for="Prev" class="col-sm-2 col-form-label fw-bold">Prev:</label>
+											<div class="col-sm-10">
+												<input type="text" disabled readonly class="form-control" id="Prev" value="0000000000000000000000000000000000000000000000000000000000000000">
+											</div>
+										</div>
+										<div class="mb-3 row">
+											<label for="Hash" class="col-sm-2 col-form-label fw-bold">Hash:</label>
+											<div class="col-sm-10">
+												<input type="text" disabled readonly class="form-control" id="Hash" value="f79e6135082289054b38a2d1e85fe55f4bf06c859d9bb765e96e537c934d9b53">
+											</div>
+										</div>
+										<div class="mb-3 row">
+											<label  class="col-sm-2 col-form-label fw-bold"></label>
+											<div class="col-sm-10">
+												<button type="button" class="btn btn-warning fw-bold text-light">Mine</button>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								<!-- tail content merkle -->
 						</div> <!-- merkle -->
 						<div class="tab-pane fade" id="pills-bloom" role="tabpanel" aria-labelledby="pills-bloom-tab" tabindex="0">
 							<form>

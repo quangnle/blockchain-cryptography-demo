@@ -1,0 +1,18 @@
+.merkle__block-item {
+  flex: 1 1 510px;
+  max-width: 510px;
+  min-width: 510px;
+}
+
+input:disabled {
+  cursor: not-allowed;
+  background-color: dimgrey;
+}
+
+@media screen and (max-width: 1025px) {
+  .merkle__block-item {
+    flex: 1 1 280px;
+    max-width: 280px;
+    min-width: 280px;
+  }
+}
