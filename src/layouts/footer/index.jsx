@@ -22,7 +22,9 @@ const Footer = () => {
           <Github className="img github" />
         </a>
       </div>
-      <h3>{t('footer.copy_right')}</h3>
+      <h3>
+        {t('footer.copy_right')} - Version: {process.env.VERSION}
+      </h3>
     </div>
   );
 };

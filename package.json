@@ -17,6 +17,10 @@
     "*.+(js|jsx|ts|tsx|json|css|md)": "prettier --write"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.0",
+    "@mui/material": "^5.8.1",
     "@reduxjs/toolkit": "^1.6.0",
     "axios": "^0.24.0",
     "connected-react-router": "^6.9.1",

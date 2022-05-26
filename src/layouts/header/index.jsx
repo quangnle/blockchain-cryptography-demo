@@ -1,23 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectDisplayLayout } from '@/store/slices/layoutSlice';
 import { goURL } from '@/helpers/route';
 
 import webpackImg from '@/assets/images/webpack.png';
+import { Link, useLocation } from 'react-router-dom';
 
 export const HEADERS = [
-  // {
-  //   name: '1',
-  //   href: '#',
-  //   label: 'Menu 1',
-  // },
+  {
+    name: 'hash',
+    href: '/hash',
+    label: 'Hash'
+  },
+  {
+    name: 'nonce',
+    href: '/nonce',
+    label: 'Nonce'
+  },
+  {
+    name: 'chain',
+    href: '/chain',
+    label: 'Chain'
+  },
+  {
+    name: 'merkle-tree',
+    href: '/merkle-tree',
+    label: 'Merkle tree'
+  },
+  {
+    name: 'bloom-filter',
+    href: '/bloom-filter',
+    label: 'Bloom filter'
+  },
+  {
+    name: 'ceasar',
+    href: '/ceasar',
+    label: 'Ceasar'
+  },
+  {
+    name: 'rsa',
+    href: '/rsa',
+    label: 'RSA'
+  },
+  {
+    name: 'digital-signature',
+    href: '/digital-signature',
+    label: 'Digital signature'
+  },
+  {
+    name: 'interactive-zkp',
+    href: '/interactive-zkp',
+    label: 'Interactive ZKP'
+  },
+  {
+    name: 'noninteractive-zkp',
+    href: '/noninteractive-zkp',
+    label: 'Non-Interactive ZKP'
+  }
 ];
 
 const Header = () => {
   const layout = useSelector(selectDisplayLayout);
   const [openMobile, setOpenMobile] = useState();
   const [section, setSection] = useState(HEADERS[0]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const sectionIndex = HEADERS.findIndex(h => h.href === location.pathname);
+    const newSection = sectionIndex != -1 ? HEADERS[sectionIndex] : HEADERS[0];
+    setSection(() => newSection);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!layout.header) {
     return null;
@@ -39,12 +93,11 @@ const Header = () => {
                 key={item.name}
                 className={section.name === item.name ? 'active' : ''}
               >
-                <a href={item.href}>
+                <Link to={item.href}>
                   <span>{item.label}</span>
-                </a>
+                </Link>
               </li>
             ))}
-            <li>Version: {process.env.VERSION}</li>
           </ul>
         </div>
         <a
