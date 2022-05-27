@@ -29,6 +29,11 @@ export const HEADERS = [
     label: 'Merkle tree'
   },
   {
+    name: 'patricia-tree',
+    href: '/patricia-tree',
+    label: 'Patricia tree'
+  },
+  {
     name: 'bloom-filter',
     href: '/bloom-filter',
     label: 'Bloom filter'
