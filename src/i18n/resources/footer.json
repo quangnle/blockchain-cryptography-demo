@@ -1,8 +1,8 @@
 {
   "en": {
-    "copy_right": "Copyright (c) 2021 by Chiến Anubis"
+    "copy_right": "Copyright (c) {{year}} by {{by}}"
   },
   "vi": {
-    "copy_right": "Bản quyền (c) 2021 bởi Chiến Anubis"
+    "copy_right": "Bản quyền (c) {{year}} bởi {{by}}"
   }
 }

@@ -1,3 +1,4 @@
+import { RSA } from '@/utils/algorithms/rsa';
 import {
   Box,
   Button,
@@ -10,9 +11,8 @@ import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
 import React, { useState } from 'react';
-import { RSA } from '@/utils/algorithms/rsa';
 
-const DigitalSignature = () => {
+const ContentPage = () => {
   const [data, setData] = useState({
     p: '',
     q: '',
@@ -46,16 +46,16 @@ const DigitalSignature = () => {
     }));
   };
 
-  function digitalSignClicked() {
+  function encryptClicked() {
     const rsa = new RSA(data.p, data.q);
     rsa.computeKeys();
 
-    const encryptedMsg = rsa.signature(data.originalMsg);
+    const encryptedMsg = rsa.encrypt(data.originalMsg);
     console.log('encryptedMsg===>', encryptedMsg);
     setData(prev => ({ ...prev, encryptedMsg }));
   }
 
-  function verifyClicked() {
+  function decryptClicked() {
     const rsa = new RSA(data.p, data.q);
     rsa.computeKeys();
 
@@ -64,8 +64,9 @@ const DigitalSignature = () => {
 
     setData(prev => ({ ...prev, originalMsg }));
   }
+
   return (
-    <Box p={3}>
+    <Box>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <Typography variant="h6" gutterBottom>
@@ -142,7 +143,7 @@ const DigitalSignature = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Divider>Sign/Verify</Divider>
+          <Divider>Encrypt/Decrypt</Divider>
         </Grid>
         <Grid item xs={12} md={5}>
           <Typography variant="h6" gutterBottom>
@@ -172,28 +173,28 @@ const DigitalSignature = () => {
             <Button
               style={{ width: '100%', marginTop: 8 }}
               disabled={!data.originalMsg}
-              onClick={digitalSignClicked}
+              onClick={encryptClicked}
               variant="contained"
               color="primary"
               endIcon={<KeyboardDoubleArrowRightRoundedIcon />}
             >
-              Sign
+              Encrypt
             </Button>
             <Button
               style={{ width: '100%', marginTop: 8 }}
               disabled={!data.encryptedMsg}
-              onClick={verifyClicked}
+              onClick={decryptClicked}
               variant="contained"
               color="secondary"
               startIcon={<KeyboardDoubleArrowLeftRoundedIcon />}
             >
-              Verify
+              Decrypt
             </Button>
           </Box>
         </Grid>
         <Grid item xs={12} md={5}>
           <Typography variant="h6" gutterBottom>
-            Digital Signature:
+            Encrypted Message:
           </Typography>
           <TextField
             required
@@ -213,4 +214,4 @@ const DigitalSignature = () => {
   );
 };
 
-export default DigitalSignature;
+export default ContentPage;

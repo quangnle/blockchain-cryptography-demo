@@ -23,7 +23,7 @@ export const RSA = function (p, q) {
   this.computeKeys = function () {
     const n = this.p * this.q;
     const lambda = ((this.p - 1) * (this.q - 1)) / gcd(this.p - 1, this.q - 1);
-    const e = lambda - 1; // co-prime with lambda
+    const e = 31; // co-prime with lambda
     let d = 1;
     while ((d * e) % lambda != 1) {
       d++;

@@ -24,17 +24,18 @@ const Block = () => {
   };
 
   return (
-    <Paper variant="outlined" elevation={5} className="merkle__block-item">
+    <Paper variant="outlined" elevation={5} className="chain__block-item">
       <Box p={3}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
+              disabled
               id="blockId"
               name="blockId"
               label="Block"
               fullWidth
               value={data.blockId}
-              onChange={onChange}
+              // onChange={onChange}
               variant="outlined"
               InputProps={{
                 startAdornment: (
