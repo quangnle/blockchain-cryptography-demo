@@ -139,7 +139,7 @@
 			rsa.computeKeys();
 			
 			let msg = document.getElementById('encRsaMsg').value;
-			document.getElementById('originRsaMsg').value = rsa.encrypt(msg);
+			document.getElementById('originRsaMsg').value = rsa.decrypt(msg);
 			event.preventDefault();
 		}
 		

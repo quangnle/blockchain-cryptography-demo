@@ -23,7 +23,7 @@ var RSA = function(p, q){
 	this.computeKeys = function(){
 		let n = this.p * this.q;
 		let lambda = (this.p - 1)*(this.q - 1) / gcd(this.p - 1, this.q - 1);
-		let e = lambda - 1; // co-prime with lambda
+		let e = 31; // co-prime with lambda
 		let d = 1;
 		while (d*e%lambda != 1){
 			d++;
