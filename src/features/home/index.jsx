@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import HomeTag from './components/tag';
 import { Select } from '@/components';
 import i18n from '@/i18n';
 import ViIcon from '@/assets/images/icon/vi.svg';
 import EnIcon from '@/assets/images/icon/en.svg';
-import HomeTag from './components/tag';
 
 const keywords = [
   { label: 'React.js' },

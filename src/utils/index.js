@@ -1,5 +1,5 @@
-import { getToken } from '@/helpers/local-storage';
 import { isEqual } from 'lodash';
+import { getToken } from '@/helpers/local-storage';
 
 export const IS_PROD = process.env.NODE_ENV === 'production';
 

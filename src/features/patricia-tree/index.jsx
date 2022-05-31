@@ -1,8 +1,8 @@
 import { Box, Button, Grid, TextField } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import * as p5 from 'p5';
-import { PatriciaTree } from '@/utils/algorithms/patricia-tree';
 import AddLinkRoundedIcon from '@mui/icons-material/AddLinkRounded';
+import { PatriciaTree } from '@/utils/algorithms/patricia-tree';
 const PatriciaTreeDemo = () => {
   const [node, setNode] = useState('');
   const canvasRef = useRef();

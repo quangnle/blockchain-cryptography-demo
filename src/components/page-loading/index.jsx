@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectLoading } from '@/store/slices/appSlice';
 import Spinner from '../spinner';
+import { selectLoading } from '@/store/slices/appSlice';
 
 const PageLoading = ({ show }) => {
   const { loading } = useSelector(selectLoading);

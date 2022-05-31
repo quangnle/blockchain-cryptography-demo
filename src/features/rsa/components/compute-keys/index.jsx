@@ -1,6 +1,6 @@
-import { RSA } from '@/utils/algorithms/rsa';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { RSA } from '@/utils/algorithms/rsa';
 
 const ComputeKeys = () => {
   const [data, setData] = useState({

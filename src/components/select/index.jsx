@@ -1,5 +1,5 @@
-import useOutsideClick from '@/hooks/useOutsideClick';
 import React, { useRef, useState } from 'react';
+import useOutsideClick from '@/hooks/useOutsideClick';
 import ArrowDown from '@/assets/images/icon/arrow-down.svg';
 
 const Select = ({
