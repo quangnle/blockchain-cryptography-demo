@@ -11,6 +11,7 @@ const Footer = () => {
   if (!footer) {
     return null;
   }
+  const currentYear = new Date().getFullYear().toString();
   return (
     <div id="footer">
       <div className="socials">
@@ -23,7 +24,8 @@ const Footer = () => {
         </a>
       </div>
       <h3>
-        {t('footer.copy_right')} - Version: {process.env.VERSION}
+        {t('footer.copy_right', { year: currentYear, by: 'Quang Le' })} -
+        Version: {process.env.VERSION}
       </h3>
     </div>
   );

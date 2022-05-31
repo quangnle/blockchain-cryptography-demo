@@ -2,7 +2,7 @@
   "author": "Chiến Anubis",
   "name": "webpack-react-starter",
   "description": "The React Boilerplate with Webpack config manual",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "src/index.jsx",
   "license": "ISC",
   "scripts": {
@@ -98,7 +98,6 @@
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^4.4.0",
-    "webpack-merge": "^5.8.0",
-    "workbox-webpack-plugin": "^6.1.5"
+    "webpack-merge": "^5.8.0"
   }
 }

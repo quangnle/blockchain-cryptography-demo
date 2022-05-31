@@ -1,5 +1,12 @@
 import { Box, Typography } from '@mui/material';
 
+export function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`
+  };
+}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

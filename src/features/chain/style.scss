@@ -1,58 +1,15 @@
-.home {
-  min-height: 40vh;
+.chain__list {
+  width: 100%;
+  overflow-y: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-bottom: 80px;
-  padding-top: 40px;
-  .select-language {
-    margin: 12px auto;
-    .lang-item {
-      display: flex;
-      align-items: center;
-    }
-  }
+  gap: 10px;
+  padding: 0 0 25px 0;
+}
 
-  .banner {
-    margin-bottom: 20px;
-    @include s-mobile {
-      width: 100%;
-    }
-  }
-
-  .title {
-    font-size: 22px;
-    font-weight: 400;
-  }
-
-  .keywords {
-    margin-top: 12px;
-  }
-
-  .author {
-    a {
-      color: $link-color;
-    }
-  }
-
-  .label {
-    display: inline-flex;
-    flex-wrap: wrap;
-  }
-  .label-item {
-    color: white;
-    padding: 8px 0.5rem;
-    border-radius: 6px;
-    margin-right: 0.4rem;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #333;
-    display: inline-block;
-  }
-  .label-item.info {
-    background-color: #00aefd;
-  }
+.chain__block-item {
+  flex: 1 1 510px;
+  max-width: 510px;
+  min-width: 510px;
+  border-radius: 16px !important;
+  background-color: rgb(196, 207, 255) !important;
 }

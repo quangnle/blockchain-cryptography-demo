@@ -1,12 +1,9 @@
+import Logo from '@/assets/images/logo-icon.svg';
+import { goURL } from '@/helpers/route';
+import { selectDisplayLayout } from '@/store/slices/layoutSlice';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 import { Link, useLocation } from 'react-router-dom';
-import { selectDisplayLayout } from '@/store/slices/layoutSlice';
-import { goURL } from '@/helpers/route';
-
-import webpackImg from '@/assets/images/webpack.png';
-
 export const HEADERS = [
   {
     name: 'hash',
@@ -39,9 +36,9 @@ export const HEADERS = [
     label: 'Bloom filter'
   },
   {
-    name: 'ceasar',
-    href: '/ceasar',
-    label: 'Ceasar'
+    name: 'caesar',
+    href: '/caesar',
+    label: 'Caesar'
   },
   {
     name: 'rsa',
@@ -86,8 +83,7 @@ const Header = () => {
       <header className="header fixed">
         <div className="logo-header">
           <div onClick={() => goURL('/')} className="box-img-flex">
-            <img width={40} src={webpackImg} alt="" />
-            <h4>React-Webpack</h4>
+            <Logo />
           </div>
         </div>
         <div className="menu">

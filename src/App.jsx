@@ -5,12 +5,12 @@ import { ConnectedRouter } from 'connected-react-router';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
+import { history } from '@/store';
 import Layout from './layouts';
 import { ErrorBoundary, PageLoading } from './components';
 import '@/i18n';
 import '@/styles/App.scss';
 import theme from './styles/theme';
-import { history } from '@/store';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {

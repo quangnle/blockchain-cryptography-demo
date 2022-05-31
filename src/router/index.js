@@ -1,5 +1,5 @@
-import RouteModules from '../features/**/route.js';
 import { NotFound } from '@/components';
+import RouteModules from '../features/**/route.js';
 // import CoreRoute from '@/features/core/route';
 // import HomeRoute from '@/features/home/route';
 
