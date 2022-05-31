@@ -1,4 +1,3 @@
-import { RSA } from '@/utils/algorithms/rsa';
 import {
   Box,
   Button,
@@ -11,6 +10,7 @@ import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
 import React, { useState } from 'react';
+import { RSA } from '@/utils/algorithms/rsa';
 
 const ContentPage = () => {
   const [data, setData] = useState({

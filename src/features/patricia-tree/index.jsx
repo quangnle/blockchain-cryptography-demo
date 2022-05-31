@@ -36,23 +36,25 @@ const PatriciaTreeDemo = () => {
     }
   };
 
+  const onAddNode = () => {
+    setNodes(prv => [...prv, node]);
+  };
+
   const addNode = leaf => {
+    console.log('leaf===>', leaf);
     patriciaTree.current.addNode(leaf);
-    setNode('');
+    //setNode('');
   };
 
   const Sketch = p => {
     const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
     const heightCanvas = windowHeight - 80 - 80; //header height, footer height
-    console.log('width ==>', windowWidth);
-    console.log('height ==>', windowHeight);
 
     p.setup = () => {
       p.createCanvas(windowWidth - 100, heightCanvas);
     };
 
     p.draw = () => {
-      console.log('rerun draw of sketch fn');
       patriciaTree.current.draw();
     };
   };
@@ -114,7 +116,7 @@ const PatriciaTreeDemo = () => {
           <Button
             style={{ marginTop: 8 }}
             disabled={!node || node.length > 6}
-            onClick={addNode}
+            onClick={onAddNode}
             variant="contained"
             endIcon={<AddLinkRoundedIcon />}
             color="secondary"

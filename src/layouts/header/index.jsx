@@ -4,9 +4,6 @@ import { selectDisplayLayout } from '@/store/slices/layoutSlice';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-
-
-
 export const HEADERS = [
   {
     name: 'hash',

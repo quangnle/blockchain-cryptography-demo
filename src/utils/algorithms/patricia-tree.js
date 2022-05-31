@@ -47,6 +47,7 @@ export const PatriciaTree = function (x, y, w, p5Instance) {
   this.nodes = [];
 
   function addNode(p, val, curVal) {
+    console.log('curVal', curVal);
     if (curVal == '') {
       p.leaf = true;
       return;

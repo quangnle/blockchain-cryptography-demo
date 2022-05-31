@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { useHistory } from 'react-router-dom';
 import { Select } from '@/components';
 import i18n from '@/i18n';
 import ViIcon from '@/assets/images/icon/vi.svg';
 import Logo from '@/assets/images/logo.svg';
-import { useHistory } from 'react-router-dom';
 
 const languageOptions = [
   {
