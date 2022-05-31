@@ -51,7 +51,6 @@ const ContentPage = () => {
     rsa.computeKeys();
 
     const encryptedMsg = rsa.encrypt(data.originalMsg);
-    console.log('encryptedMsg===>', encryptedMsg);
     setData(prev => ({ ...prev, encryptedMsg }));
   }
 
@@ -60,7 +59,6 @@ const ContentPage = () => {
     rsa.computeKeys();
 
     const originalMsg = rsa.decrypt(data.encryptedMsg);
-    console.log('originalMsg===>', originalMsg);
 
     setData(prev => ({ ...prev, originalMsg }));
   }

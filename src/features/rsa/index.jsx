@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Box, Tab, Tabs } from '@mui/material';
-import ContentPage from './components/content-rsa';
 import TabPanel, { a11yProps } from '@/components/tab-panel';
+import ContentPage from './components/content-rsa';
 
 const RSA = () => {
   const [value, setValue] = React.useState(0);

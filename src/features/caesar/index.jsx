@@ -1,10 +1,12 @@
+import { Caesar as AlgorithmCaesar } from '@/utils/algorithms/Caesar';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-const Ceasar = () => {
+const Caesar = () => {
   const [data, setData] = useState({
     key: '',
-    content: ''
+    content: '',
+    encryptedVal: ''
   });
 
   const onChange = e => {
@@ -14,6 +16,18 @@ const Ceasar = () => {
       [name]: value
     }));
   };
+
+  function encryptClicked() {
+    const crypto = new AlgorithmCaesar(data.key * 1);
+    const encryptedVal = crypto.encrypt(data.content);
+    setData(prv => ({ ...prv, encryptedVal }));
+  }
+
+  function decryptClicked() {
+    const crypto = new AlgorithmCaesar(data.key * 1);
+    const content = crypto.decrypt(data.encryptedVal);
+    setData(prv => ({ ...prv, content }));
+  }
 
   return (
     <Box p={3}>
@@ -51,16 +65,12 @@ const Ceasar = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button
-            // onClick={onCalculate}
-            variant="contained"
-            color="primary"
-          >
+          <Button onClick={encryptClicked} variant="contained" color="primary">
             Encrypt
           </Button>
           <Button
             style={{ marginLeft: 16 }}
-            // onClick={onCalculate}
+            onClick={decryptClicked}
             variant="contained"
             color="secondary"
           >
@@ -69,15 +79,15 @@ const Ceasar = () => {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>
-            Hash value:
+            Encrypted value:
           </Typography>
           <TextField
             disabled
-            id="firstName"
-            name="firstName"
+            id="encryptedVal"
+            name="encryptedVal"
             label=""
             fullWidth
-            // value={data ? SHA256(data) : ''}
+            value={data.encryptedVal}
             autoComplete="given-name"
             variant="outlined"
           />
@@ -87,4 +97,4 @@ const Ceasar = () => {
   );
 };
 
-export default Ceasar;
+export default Caesar;

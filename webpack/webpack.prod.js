@@ -7,7 +7,6 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const isWsl = require('is-wsl');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const commonPaths = require('./paths');
 
@@ -108,19 +107,6 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CompressionPlugin({
       test: /\.(css|js|html|svg)$/
-    }),
-    new WorkboxWebpackPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-      exclude: [/\.map$/, /asset-manifest\.json$/],
-      navigateFallback: './index.html',
-      navigateFallbackDenylist: [
-        // Exclude URLs starting with /_, as they're likely an API call
-        new RegExp('^/_'),
-        // Exclude URLs containing a dot, as they're likely a resource in
-        // public/ and not a SPA route
-        new RegExp('/[^/]+\\.[^/]+$')
-      ]
     }),
     new ImageMinimizerPlugin({
       severityError: 'warning', // Ignore errors on corrupted images

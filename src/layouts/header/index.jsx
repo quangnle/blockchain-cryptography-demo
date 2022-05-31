@@ -36,9 +36,9 @@ export const HEADERS = [
     label: 'Bloom filter'
   },
   {
-    name: 'ceasar',
-    href: '/ceasar',
-    label: 'Ceasar'
+    name: 'caesar',
+    href: '/caesar',
+    label: 'Caesar'
   },
   {
     name: 'rsa',

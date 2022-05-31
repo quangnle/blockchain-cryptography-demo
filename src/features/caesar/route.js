@@ -4,8 +4,8 @@ const Home = lazy(() => import('./index'));
 
 export default [
   {
-    name: 'ceasar',
-    path: '/ceasar',
+    name: 'caesar',
+    path: '/caesar',
     exact: true,
     component: Home
   }

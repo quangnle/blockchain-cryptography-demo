@@ -64,10 +64,10 @@ const languageOptions = [
     label: (
       <div className="lang-item">
         <ViIcon width={14} />
-        <span>&nbsp;&nbsp;</span> Ceasar
+        <span>&nbsp;&nbsp;</span> Caesar
       </div>
     ),
-    value: '/ceasar'
+    value: '/caesar'
   },
   {
     label: (

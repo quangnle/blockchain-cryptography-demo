@@ -11,6 +11,7 @@ import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoub
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
 import React, { useState } from 'react';
 import { RSA } from '@/utils/algorithms/rsa';
+import { toastError, toastSuccess } from '@/helpers/toast';
 
 const DigitalSignature = () => {
   const [data, setData] = useState({
@@ -51,7 +52,6 @@ const DigitalSignature = () => {
     rsa.computeKeys();
 
     const encryptedMsg = rsa.signature(data.originalMsg);
-    console.log('encryptedMsg===>', encryptedMsg);
     setData(prev => ({ ...prev, encryptedMsg }));
   }
 
@@ -59,10 +59,9 @@ const DigitalSignature = () => {
     const rsa = new RSA(data.p, data.q);
     rsa.computeKeys();
 
-    const originalMsg = rsa.decrypt(data.encryptedMsg);
-    console.log('originalMsg===>', originalMsg);
-
-    setData(prev => ({ ...prev, originalMsg }));
+    if (rsa.verify(data.originalMsg, data.encryptedMsg))
+      toastSuccess('Valid signature');
+    else toastError('Invalid signature');
   }
   return (
     <Box p={3}>
@@ -196,6 +195,7 @@ const DigitalSignature = () => {
             Digital Signature:
           </Typography>
           <TextField
+            disabled
             required
             id="encryptedMsg"
             name="encryptedMsg"

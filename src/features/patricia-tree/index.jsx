@@ -41,7 +41,6 @@ const PatriciaTreeDemo = () => {
   };
 
   const addNode = leaf => {
-    console.log('leaf===>', leaf);
     patriciaTree.current.addNode(leaf);
     //setNode('');
   };
@@ -85,8 +84,6 @@ const PatriciaTreeDemo = () => {
     );
     for (const leaf of nodes) addNode(leaf);
   }, [nodes]);
-
-  // console.log(patriciaTree.current);
 
   return (
     <Box
