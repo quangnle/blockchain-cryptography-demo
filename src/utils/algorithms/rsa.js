@@ -62,6 +62,6 @@ export const RSA = function (p, q) {
   };
 
   this.verify = function (msg, signature) {
-    return this.encrypt(msg) === signature;
+    return this.encrypt(signature) === msg;
   };
 };
